@@ -1,1 +1,1 @@
-# payfox-wallet-frontend
+# bitbox-wallet-frontend
