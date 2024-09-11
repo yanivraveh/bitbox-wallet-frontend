@@ -1,0 +1,139 @@
+/* define app colors */
+:root {
+  --main-color: #01132F;
+  --secondary-color: #F8F8F8;
+  --bg-dark-color: #0F1F38;
+  --bg-medium-color: #384252;
+  --gray-color: #848A93;
+  --border-radius: 16px;
+}
+
+/* reset styling */
+body {
+  margin: 0;
+  font-family: "Geologica", sans-serif;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* define typography classes */
+h1 {
+  margin: 0;
+  line-height: 43.2px;
+  font-size: 36px;
+} 
+.body1 {
+  line-height: 16.8px;
+  font-size: 14px;
+}
+.body2 {
+  line-height: 17.5px;
+  font-size: 14px;
+}
+h1, h2, .body1, .body2 {
+  color: var(--main-color);
+  text-align: center;
+  font-weight: 400;
+}
+
+/* define reusable classes */
+.font-weight-500 {
+  font-weight: 500;
+}
+.gap-8 {
+  gap: 8px;
+}
+.gap-10 {
+  gap: 10px;
+}
+.gap-16 {
+  gap: 16px;
+}
+.padding-16 {
+  padding: 16px;
+}
+.padding-hor-8 {
+  padding: initial 8px;
+}
+.text-secondary {
+  color: var(--secondary-color);
+}
+.text-gray {
+  color: var(--gray-color);
+}
+
+#app-container {
+  background-color: var(--main-color);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+#header {
+  display: flex;
+  padding: 40px 120px;
+  justify-content: space-between;
+
+  [name=logo] {
+    display: flex;
+    gap: 16px;
+    text-decoration: none;
+  }
+}
+
+#navigator {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+#navigator-container {
+  background-color: transparent;
+  /* box-shadow: inset 0 0 4px 0 #eee; */
+  width: 65vh;
+  height: 80vh;
+  display: block;
+  overflow: hidden;
+}
+
+.dashboard-panel {
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--secondary-color);
+}
+
+.temp{
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-dark-color);
+
+  [name=header] {
+      display: flex;
+      justify-content: space-between;
+
+      [name=view-all] {
+        margin: 10px;
+      }
+  }
+
+  [name=list] {
+    display: flex;
+    flex-direction: column;
+  }
+
+  [name=list-item] {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--bg-medium-color);
+    padding: 16px 0;
+
+    [name=description] {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
