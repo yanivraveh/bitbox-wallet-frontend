@@ -9,7 +9,7 @@ let walletId = localStorage.walletId || '';
  * Http request instance
  */
 const request = axios.create({
-    baseURL: 'http://ec2-13-60-57-142.eu-north-1.compute.amazonaws.com:8081/wallet/'
+    baseURL: import.meta.env.VITE_API_URL
 });
 
 /**
