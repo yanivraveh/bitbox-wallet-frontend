@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
 const Container = styled.div`
-    padding: 0 48px 40px 48px;
+    padding: 16px 48px;
     display: flex;
     flex-direction: column;
 `;
 
-const MainBodyContainer = ({children}) => {
+const MainBodyContainer = ({children, ...rest}) => {
     return (
-        <Container id="main-body-container" className="gap-16">
+        <Container id="main-body-container" {...rest}>
             {children}
         </Container>
     );

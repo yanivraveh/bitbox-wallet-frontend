@@ -1,7 +1,19 @@
+import styled from "styled-components";
+
 /**
  * Available icons. should match one of the images inside src/assets/icons
  */
-const names = ['plus_rounded', 'divider', 'lock_rounded', 'minus_rounded', 'transfer_rounded'];
+const names = ['plus_rounded', 'divider', 'lock_rounded', 'minus_rounded', 'transfer_rounded', 'currency_exchange_rounded'];
+
+/**
+ * Vertical layout for icon item
+ */
+const IconContainer = styled.a`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+`;
 
 /**
  * Renders an icon component
@@ -9,7 +21,7 @@ const names = ['plus_rounded', 'divider', 'lock_rounded', 'minus_rounded', 'tran
  * @param {string} name name of the icon 
  * @returns {Component}
  */
-const Icon = ({name, ...rest}) => {
+const Icon = ({name, text, size, textClassName, ...rest}) => {
     // check that name property is present
     if (!name) {
         throw new Error("Icon name is required");
@@ -19,14 +31,22 @@ const Icon = ({name, ...rest}) => {
         throw new Error(`Icon name is not among available names: [${names.join(', ')}]`);
     }
 
+    const iconSize = size || 40;
+
     return (
-        <img
-            src={`src/assets/icons/${name}.svg`}
-            width={40}
-            height={40}
-            alt="?"
-            {...rest}
-        />
+        <IconContainer className="gap-8" {...rest}>
+            <img
+                src={`src/assets/icons/${name}.svg`}
+                width={iconSize}
+                height={iconSize}
+                alt="?"
+                {...rest}
+            />
+
+            {
+                text && <div className={`body2 ${textClassName || ''}`.trim()}>{text}</div>
+            }
+        </IconContainer>
     );
 }
 

@@ -7,6 +7,7 @@ import FundPage from "./pages/fund/fundPage.jsx";
 import DefundPage from "./pages/defund/defundPage.jsx";
 import TransferPage from "./pages/transfer/transferPage.jsx";
 import DashboardPage from "./pages/dashboard";
+import LockPage from "./pages/lock";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
         <a name="logo" href="/">
           <img src="/src/assets/logo.svg" alt="Logo" />
 
-          <h1 className="text-secondary">DILS wallet</h1>
+          <h1 className="text-secondary">Bit Box</h1>
         </a>
 
         <div name="user-info"></div>
@@ -25,16 +26,15 @@ function App() {
         <div id="navigator-container">
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<WelcomePage />} />
+              <Route path="/" element={<DashboardPage />} />
               <Route path="/main" element={<MainPage />} />
               <Route path="/fund" element={<FundPage />} />
               <Route path="/defund" element={<DefundPage />} />
               <Route path="/transfer" element={<TransferPage />} />
-              <Route path="/lock" element={"lock"} />
+              <Route path="/lock" element={<LockPage  />} />
               <Route path="/addressbook" element={"address book"} />
               <Route path="/wallet" element={"wallet"} />
               <Route path="/transactions" element={"transactions"} />
-              <Route path="/dashboard" element={<DashboardPage />} />
 
               <Route path="*" element={"no such route"} />
             </Routes>
