@@ -1,10 +1,15 @@
-import { BalancePanel, Button, Icon, Input } from "../../components";
+import { BalancePanel, Button, Icon, Input, Popup } from "../../components";
 import MainBodyContainer from "../../components/containers/main-body-container";
 import { useState } from "react";
 
 const LockPage = () => {
     // define object that holds form data
     const [model, setMoel] = useState({});
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+    const closePopup = () => setIsPopupOpen(false);
+    const openPopup = () => setIsPopupOpen(true);
+
 
     /**
      * Handles form inputs value change event.
@@ -22,6 +27,18 @@ const LockPage = () => {
     return (
         <MainBodyContainer>
             <BalancePanel />
+            <button onClick={openPopup}>Open Popup</button>
+
+            <Popup
+                isOpen={isPopupOpen}
+                onClose={closePopup}
+                iconName="lock_rounded"
+                text="Are you sure you want to create a lock?"
+                buttons={[
+                    { text: 'Detailed', onClick: () => alert('Detailed clicked!') },
+                    { text: 'Cancel', onClick: closePopup }
+                ]}
+            />
 
             <div className="padding-top-16">
                 <Icon
