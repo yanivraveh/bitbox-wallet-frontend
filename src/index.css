@@ -119,6 +119,12 @@ h1, h2, .body1, .body2, .btn {
   height: 80vh;
   display: block;
   overflow: scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+#navigator-container::-webkit-scrollbar {
+  display: none;
 }
 
 #dashboard {
