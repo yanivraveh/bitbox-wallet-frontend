@@ -1,10 +1,12 @@
+
+import { useState } from 'react';
+
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { BalancePanel, Button, Icon, Input, Select, Popup } from "../../components";
 import MainBodyContainer from "../../components/containers/main-body-container";
-import { lockTypes } from '../../helpers';
+import { LOCK_TYPE, lockTypes } from '../../helpers';
 import api from '../../api';
-import { useState } from 'react';
 
 const LockPage = () => {
     const navigate = useNavigate();
@@ -18,11 +20,11 @@ const LockPage = () => {
         ...lockRequest,
         lockRequestId: lockRequest?.id
     });
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-    const closePopup = () => setIsPopupOpen(false);
-    const openPopup = () => setIsPopupOpen(true);
-
+    const iconName = model.type == LOCK_TYPE.money ? 'currency_exchange_rounded' : 'plane_rounded';
+    const lockName = lockTypes.find(item => item.id == model.type)?.name || '';
+    console.log(model);
+    
 
     /**
      * Handles form submit. create new lock.
@@ -40,23 +42,11 @@ const LockPage = () => {
     return (
         <MainBodyContainer>
             <BalancePanel />
-            <button onClick={openPopup}>Open Popup</button>
-
-            <Popup
-                isOpen={isPopupOpen}
-                onClose={closePopup}
-                iconName="lock_rounded"
-                text="Are you sure you want to create a lock?"
-                buttons={[
-                    { text: 'Detailed', onClick: () => alert('Detailed clicked!') },
-                    { text: 'Cancel', onClick: closePopup }
-                ]}
-            />
 
             <div className="padding-top-16">
                 <Icon
-                    name="currency_exchange_rounded"
-                    text="Currency exchange"
+                    name={iconName}
+                    text={lockName}
                     textClassName="text-secondary"
                     size={56}
                 />

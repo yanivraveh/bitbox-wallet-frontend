@@ -54,7 +54,7 @@ export const formatCurrencySymbol = (num) => {
 export const lockTypes = [
     {
         id: 1,
-        name: 'Money lock',
+        name: 'Currency exchange lock',
     },
     {
         id: 2,
