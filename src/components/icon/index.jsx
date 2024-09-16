@@ -3,7 +3,7 @@ import styled from "styled-components";
 /**
  * Available icons. should match one of the images inside src/assets/icons
  */
-const names = ['plus_rounded', 'divider', 'lock_rounded', 'minus_rounded', 'transfer_rounded', 'currency_exchange_rounded'];
+const names = ['logo', 'plus_rounded', 'divider', 'lock_rounded', 'minus_rounded', 'transfer_rounded', 'currency_exchange_rounded'];
 
 /**
  * Vertical layout for icon item

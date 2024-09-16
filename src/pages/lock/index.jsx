@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { BalancePanel, Button, Icon, Input, Select } from "../../components";
+import { BalancePanel, Button, Icon, Input, Select, Popup } from "../../components";
 import MainBodyContainer from "../../components/containers/main-body-container";
 import { lockTypes } from '../../helpers';
 import api from '../../api';
@@ -18,6 +18,11 @@ const LockPage = () => {
         ...lockRequest,
         lockRequestId: lockRequest?.id
     });
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+    const closePopup = () => setIsPopupOpen(false);
+    const openPopup = () => setIsPopupOpen(true);
+
 
     /**
      * Handles form submit. create new lock.
@@ -35,6 +40,18 @@ const LockPage = () => {
     return (
         <MainBodyContainer>
             <BalancePanel />
+            <button onClick={openPopup}>Open Popup</button>
+
+            <Popup
+                isOpen={isPopupOpen}
+                onClose={closePopup}
+                iconName="lock_rounded"
+                text="Are you sure you want to create a lock?"
+                buttons={[
+                    { text: 'Detailed', onClick: () => alert('Detailed clicked!') },
+                    { text: 'Cancel', onClick: closePopup }
+                ]}
+            />
 
             <div className="padding-top-16">
                 <Icon
