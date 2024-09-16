@@ -1,6 +1,6 @@
 import FormField from "./template";
 
-const Input = ({label, value, ...rest}) => {
+const Input = ({label, ...rest}) => {
     return (
         <FormField
         label={label}>
