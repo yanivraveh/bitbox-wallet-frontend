@@ -36,3 +36,44 @@ export const formatCurrency = (num) => {
     const number = formatNumber(num);
     return `${number} ILS`;
 }
+
+/**
+ * Add currency symbol to number.
+ * 
+ * @param {int} num number to format in currency
+ * @returns {string}
+ */
+export const formatCurrencySymbol = (num) => {
+    const number = roundNumber(num);
+    return `₪${number}`;
+}
+
+/**
+ * list of locks types
+ */
+export const lockTypes = [
+    {
+        id: 1,
+        name: 'Money lock',
+    },
+    {
+        id: 2,
+        name: 'Plane ticket lock'
+    },
+];
+
+/**
+ * Types of locks
+ */
+export const LOCK_TYPE = {
+    money: 1,
+    ticket: 2,
+};
+
+/**
+ * Statuses of locks
+ */
+export const LOCK_STATUS = {
+    waiting: 1,
+    ready: 2,
+};

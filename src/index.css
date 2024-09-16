@@ -5,6 +5,7 @@
   --bg-dark-color: #0F1F38;
   --bg-medium-color: #384252;
   --gray-color: #848A93;
+  --green-color: #0AEB72;
   --yellow-color: #F6C308;
   --border-radius: 16px;
 }
@@ -79,6 +80,9 @@ h1, h2, .body1, .body2, .btn {
 }
 .text-gray {
   color: var(--gray-color);
+}
+.text-green {
+  color: var(--green-color);
 }
 
 #app-container {
@@ -200,7 +204,7 @@ h1, h2, .body1, .body2, .btn {
   display: flex;
   flex-direction: column;
 
-  input {
+  input, select {
     background-color: transparent;
     border: none;
     height: 17px;
