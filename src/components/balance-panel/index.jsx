@@ -27,12 +27,12 @@ const BalancePanel = ({isDashboard}) => {
         total: 0,
         locked: 0,
     });
-    // useEffect(() => {
-    //     (async function fetchData() {
-    //         const res = await api.getBalance();                        
-    //         setBalance(res.data);
-    //     })();
-    // }, []);
+    useEffect(() => {
+        (async function fetchData() {
+            const res = await api.getBalance();                        
+            setBalance(res.data);
+        })();
+    }, []);
 
     return (
         <div className="balance-panel">

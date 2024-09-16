@@ -3,7 +3,8 @@ import styled from "styled-components";
 /**
  * Available icons. should match one of the images inside src/assets/icons
  */
-const names = ['logo', 'plus_rounded', 'divider', 'lock_rounded', 'minus_rounded', 'transfer_rounded', 'currency_exchange_rounded'];
+const names = ['logo', 'plus_rounded', 'divider', 'lock_rounded', 'minus_rounded', 'lock',
+    'transfer_rounded', 'currency_exchange_rounded', 'success_rounded', 'plane_rounded'];
 
 /**
  * Vertical layout for icon item
@@ -21,7 +22,7 @@ const IconContainer = styled.a`
  * @param {string} name name of the icon 
  * @returns {Component}
  */
-const Icon = ({name, text, size, textClassName, ...rest}) => {
+const Icon = ({name, text, size, width, height, textClassName, ...rest}) => {
     // check that name property is present
     if (!name) {
         throw new Error("Icon name is required");
@@ -37,9 +38,8 @@ const Icon = ({name, text, size, textClassName, ...rest}) => {
         <IconContainer className="gap-8" {...rest}>
             <img
                 src={`src/assets/icons/${name}.svg`}
-                width={iconSize}
-                height={iconSize}
-                alt="?"
+                width={width || iconSize}
+                height={height || iconSize}
                 {...rest}
             />
 

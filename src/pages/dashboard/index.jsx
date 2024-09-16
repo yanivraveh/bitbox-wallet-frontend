@@ -1,12 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import { useNavigate } from 'react-router-dom';
 
 import MainContainer from "../../components/containers/mainContainer";
 import MainBodyContainer from "../../components/containers/main-body-container";
-import { Icon, BalancePanel } from "../../components";
+import { Icon, BalancePanel, Popup } from "../../components";
 import api from "../../api";
-import { formatCurrency, formatCurrencySymbol, LOCK_STATUS } from "../../helpers";
+import { formatCurrency, formatCurrencySymbol, LOCK_STATUS, LOCK_TYPE } from "../../helpers";
+import styled from "styled-components";
+
+const LockIconContainer = styled.div`
+    position: absolute;
+    bottom: 0;
+    right: -2px;
+`;
 
 /**
  * Renders a panel that displays and describe list of data
@@ -22,10 +29,20 @@ const Panel = ({title, data}) => {
                 {
                     data?.map((item, index) => {
                         const className = `body1 text-secondary ${item.status == LOCK_STATUS.ready ? 'text-green' : ''}`;
+                        const iconName = item.type == LOCK_TYPE.money ? 'currency_exchange_rounded' : 'plane_rounded';
 
                         return (<div key={index} name="list-item">
                             <div name="description" className="gap-8">
-                                <Icon name="lock_rounded" size={32} />
+                                <div style={{position: 'relative'}}>
+                                    <Icon name={iconName} size={32} />
+
+                                    {
+                                        item.status == LOCK_STATUS.waiting &&
+                                        <LockIconContainer>
+                                            <Icon name="lock" width={10.73} height={13.93} />
+                                        </LockIconContainer>
+                                    }
+                                </div>
 
                                 <div className="body1 text-secondary">{item.description}</div>
                             </div>
@@ -41,6 +58,11 @@ const Panel = ({title, data}) => {
 
 const DashboardPage = () => {
     const navigate = useNavigate();
+
+    /**
+     * Popup component inner object reference
+     */
+    const popupRef = useRef(null);
     
     // fetch locks from api
     const [locks, setLocks] = useState([]);
@@ -48,6 +70,9 @@ const DashboardPage = () => {
         (async function fetchData() {
             const res = await api.getLocks();                        
             setLocks(res.data);
+
+            const hasReady = res.data.find(item => item.status == LOCK_STATUS.ready);            
+            hasReady && popupRef.current.success();
         })();
     }, []);
 
@@ -60,6 +85,7 @@ const DashboardPage = () => {
     //     })();
     // }, []);
 
+    // show lock request notifications
     useEffect(() => {
         // Set the interval to perform the task every 5 seconds
         const interval = setInterval(() => {
@@ -67,10 +93,15 @@ const DashboardPage = () => {
                 try {
                     const res = await api.getLatestLockRequest(); 
                     const record = res.data;       
-                    if (record) {
+                    if (record && !popupRef?.current?.isVisible()) {                        
                         // Navigate to '/lock' and pass data via state
-                        confirm(`A request came from ${record.senderId} for the amount of ${formatCurrency(record.amount)}`)
-                        && navigate('/lock', { state: { lockRequest: record } });
+                        const  title = `A request came from "${record.senderId}" for the amount of ${formatCurrency(record.amount)}`;
+                        const res = await popupRef?.current?.confirmation({
+                            iconName: 'lock_rounded',
+                            okBtnText: 'Detailed',
+                            title
+                        });                        
+                        res && navigate('/lock', { state: { lockRequest: record } });
                     }
                 } catch (error) {
                     console.error(error);    
@@ -99,6 +130,12 @@ const DashboardPage = () => {
                     />
                 </MainBodyContainer>
             </div>
+
+            <Popup
+                ref={popupRef}
+                iconName="lock_rounded"
+                okBtnText='Detailed'
+            />
         </MainContainer>        
     );
 }

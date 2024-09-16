@@ -51,31 +51,142 @@ const ButtonsContainer = styled.div`
   margin-top: 16px;
 `;
 
-const Popup = ({ isOpen, onClose, iconName, text, buttons = [] }) => {
-  if (!isOpen) return null;
+var hideDialog;
 
-  return (
-    <Overlay>
-      <PopupContent>
-        <CloseButton onClick={onClose}>×</CloseButton>
+class Popup extends React.Component {
+  constructor(props) {
+    super(props);
+    this.confirmation = this.confirmation.bind(this);
+    this.isVisible = this.isVisible.bind(this);
+    this.showDialog = this.showDialog.bind(this);
+    this.success = this.success.bind(this);
 
-        {/* Icon */}
-        <Icon name={iconName || `logo`} size={56} />
+    this.state = {
+      visible: false,
+    }
+  }
 
-        {/* Message Text */}
-        <Message>{text}</Message>
+  /**
+  * show confirmation dialog
+  *
+  * @param {string} title popup title message
+  * @return {Promise<boolean>}
+  */
+  confirmation(props) {
+    return this.showDialog(props);
+  }
 
-        {/* Buttons (render if available) */}
-        {buttons.length > 0 && (
-          <ButtonsContainer>
-            {buttons.map((button, index) => (
-              <Button key={index} text={button.text} onClick={button.onClick} />
-            ))}
-          </ButtonsContainer>
-        )}
-      </PopupContent>
-    </Overlay>
-  );
-};
+  /**
+   * Determines whether the popup is visible
+   * 
+   * @returns {boolean}
+   */
+  isVisible() {
+    return this.state.visible;
+  }
+
+  /**
+  * show a dialog
+  *
+  * @param {string} title dialog title
+  * @param {string} type dialog type. eg confirmation, warining, error
+  * @return {Promise<boolean>}
+  */
+  showDialog({title, okBtnText, iconName, type = 'confirmation'}) {
+    let self = this;
+
+    return new Promise(function(resolve, reject) {
+      self.setState({
+        visible: true,
+        okBtnText,
+        iconName,
+        title,
+        type,
+      });
+
+      /**
+      * hides the dialog
+      *
+      * @param {boolean} value dialog result yes|no
+      */
+      hideDialog = (value) => {
+        self.setState({
+          visible: false,
+        });
+
+        resolve(value);
+      }
+    });
+  }
+
+  /**
+  * show success/alert dialog
+  *
+  * @param {string} title popup title message
+  * @return {Promise<boolean>}
+  */
+  success(props) {
+    return this.showDialog({
+      ...props,
+      type: 'alert',
+      iconName: 'success_rounded',
+      title: 'The operation was a success!',
+    });
+  }
+
+  render() {
+    const { visible, type, title, iconName='logo', okBtnText='OK', cancelBtnText='Cancel' } = this.state;
+    
+    if (!visible) return null;
+
+    return (
+      <Overlay>
+        <PopupContent>
+          <CloseButton onClick={e => hideDialog(false)}>×</CloseButton>
+  
+          <Icon name={iconName} />
+  
+          <Message>{title}</Message>
+          
+          {
+            type == 'confirmation' &&
+            <ButtonsContainer>
+              <Button key="ok" text={okBtnText} onClick={e => hideDialog(true)} />
+
+              <Button key="cancel" text={cancelBtnText} appereance="outlined" onClick={e => hideDialog(false)} />
+            </ButtonsContainer>
+          }
+        </PopupContent>
+      </Overlay>
+    );
+  }
+}
+
+// const Popup = ({ isOpen, onClose, iconName, text, buttons = [] }) => {
+//   if (!isOpen) return null;
+
+//   return (
+//     <Overlay>
+//       <PopupContent>
+//         <CloseButton onClick={onClose}>×</CloseButton>
+
+//         {/* Icon */}
+//         <Icon name={iconName || `logo`} size={56} />
+
+//         {/* Message Text */}
+//         <Message>{text}</Message>
+
+//         {/* Buttons (render if available) */}
+//         {buttons.length > 0 && (
+//           <ButtonsContainer>
+//             {buttons.map((button, index) => (
+//               <Button key={index} text={button.text} onClick={button.onClick} />
+//             ))}
+//           </ButtonsContainer>
+//         )}
+//       </PopupContent>
+//     </Overlay>
+//   );
+// };
 
 export default Popup;

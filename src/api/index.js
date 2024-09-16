@@ -169,8 +169,9 @@ export default {
                 
                 const record = records.at(-1) || null;
                 if (record) {
-                    let duration = `${moment.unix(record.endDate).diff(moment(), 'd')} days`;
-                    record.duration = duration < 0 ? 0 : duration;
+                    let duration = moment.unix(record.endDate).diff(moment(), 'd');
+                    duration = duration < 0 ? 0 : duration;
+                    record.duration = `${duration} days`;
                 }
                 resolve({
                     data: record,
