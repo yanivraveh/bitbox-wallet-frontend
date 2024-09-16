@@ -1,10 +1,23 @@
-import { BalancePanel, Button, Icon, Input, Popup } from "../../components";
+import { useLocation, useNavigate } from 'react-router-dom';
+
+import { BalancePanel, Button, Icon, Input, Select, Popup } from "../../components";
 import MainBodyContainer from "../../components/containers/main-body-container";
-import { useState } from "react";
+import { lockTypes } from '../../helpers';
+import api from '../../api';
+import { useState } from 'react';
 
 const LockPage = () => {
-    // define object that holds form data
-    const [model, setMoel] = useState({});
+    const navigate = useNavigate();
+
+    const location = useLocation();
+    const { state } = location || {}; // Optional chaining in case there's no state
+    const { lockRequest } = state || {}; // Extracting data from state
+
+
+    const [model] = useState({
+        ...lockRequest,
+        lockRequestId: lockRequest?.id
+    });
     const [isPopupOpen, setIsPopupOpen] = useState(false);
 
     const closePopup = () => setIsPopupOpen(false);
@@ -12,16 +25,16 @@ const LockPage = () => {
 
 
     /**
-     * Handles form inputs value change event.
+     * Handles form submit. create new lock.
      * 
-     * @param {Event} e input value change event object
-     * @param {string} key name of the input wich  value has changed
+     * @param {Event} e submit button click event
      */
-    const onInputValueChange = (e, key) => {        
-        setMoel({
-            ...model,
-            [key]: e.target.value,
-        });
+    const OnSubmit = e => {
+        api.createLock(model).then(res => {
+            alert('Save succeeded');
+            navigate('/');
+        })
+        .catch(err => console.error(err));
     }
 
     return (
@@ -48,43 +61,50 @@ const LockPage = () => {
                     size={56}
                 />
 
-                <div className="gap-4 flex-column padding-top-16">
+                <form className="gap-4 flex-column padding-top-16">
                     <Input
-                        label="Counterparty"
-                        value={model.counterParty}
-                        onChange={e => onInputValueChange(e, 'counterParty')}
+                        label="Sender ID"
+                        defaultValue={model.senderId}
+                        readOnly
                     />
 
                     <Input
-                        label="Counterparty wallet ID"
-                        value={model.counterPartyWalletId}
-                        onChange={e => onInputValueChange(e, 'counterPartyWalletId')}
+                        label="Recepient ID"
+                        defaultValue={model.recepientId}
+                        readOnly
                     />
 
                     <Input
-                        label="Description"
-                        value={model.description}
-                        onChange={e => onInputValueChange(e, 'description')}
+                        label="Recepient Psp ID"
+                        defaultValue={model.recipientPspId}
+                        readOnly
+                    />
+
+                    <Select
+                        label="Lock type"
+                        options={lockTypes}
+                        defaultValue={model.type}
+                        readOnly
                     />
 
                     <Input
                         label="Amount"
-                        value={model.amount}
+                        defaultValue={model.amount}
                         type="number"
-                        onChange={e => onInputValueChange(e, 'amount')}
+                        readOnly
                     />
 
                     <Input
                         label="Time for lock"
-                        value={model.time}
-                        type="number"
-                        onChange={e => onInputValueChange(e, 'time')}
+                        defaultValue={model.duration}
+                        readOnly
                     />
 
                     <Button
                         text="Create lock"
+                        onClick={OnSubmit}
                     />
-                </div>
+                </form>
             </div>
         </MainBodyContainer>
     );

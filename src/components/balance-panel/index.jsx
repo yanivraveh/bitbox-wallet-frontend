@@ -27,12 +27,12 @@ const BalancePanel = ({isDashboard}) => {
         total: 0,
         locked: 0,
     });
-    useEffect(() => {
-        (async function fetchData() {
-            const res = await api.getBalance();                        
-            setBalance(res.data);
-        })();
-    }, []);
+    // useEffect(() => {
+    //     (async function fetchData() {
+    //         const res = await api.getBalance();                        
+    //         setBalance(res.data);
+    //     })();
+    // }, []);
 
     return (
         <div className="balance-panel">
@@ -57,7 +57,7 @@ const BalancePanel = ({isDashboard}) => {
 
                             <Icon name="minus_rounded" text="Defund" href="./defund" />
 
-                            <Icon name="lock_rounded" text="Lock" href="./lock" />
+                            <Icon name="lock_rounded" text="Lock" href="./lock-request" />
 
                             <Icon name="transfer_rounded" text="Transfer" href="./transfer" />
                         </IconsContainer>
