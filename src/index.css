@@ -7,6 +7,7 @@
   --gray-color: #848A93;
   --green-color: #0AEB72;
   --yellow-color: #F6C308;
+  --purple-color: #7747EE;
   --border-radius: 16px;
 }
 
@@ -44,6 +45,23 @@ h1, h2, .body1, .body2, .btn {
   color: var(--main-color);
   text-align: center;
   font-weight: 400;
+}
+/* Frame 2 */
+
+.frame2{
+display: flex;
+flex-direction: row;
+justify-content: flex-end;
+align-items: center;
+padding: 0px;
+gap: 24px;
+}
+.frame2-content{
+/* Inside auto layout */
+flex: none;
+order: 5;
+align-self: stretch;
+flex-grow: 0;
 }
 
 /* define reusable classes */
@@ -84,7 +102,9 @@ h1, h2, .body1, .body2, .btn {
 .text-green {
   color: var(--green-color);
 }
-
+.text-purple {
+  color: var(--purple-color);
+}
 #app-container {
   background-color: var(--main-color);
   display: flex;

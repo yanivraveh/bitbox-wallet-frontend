@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import MainContainer from "../../components/containers/mainContainer";
 import MainBodyContainer from "../../components/containers/main-body-container";
@@ -32,8 +32,9 @@ const Panel = ({title, data}) => {
                         const iconName = item.type == LOCK_TYPE.money ? 'currency_exchange_rounded' : 'plane_rounded';
 
                         return (<div key={index} name="list-item">
-                            <div name="description" className="gap-8">
-                                <div style={{position: 'relative'}}>
+                           
+                                <div name="description" className="gap-8">
+                                    <div style={{position: 'relative'}}>
                                     <Icon name={iconName} size={32} />
 
                                     {
@@ -43,10 +44,14 @@ const Panel = ({title, data}) => {
                                         </LockIconContainer>
                                     }
                                 </div>
+                                    <Link to={{
+                                     pathname: `/lock/${item.id}`,
+                                     state: { lock: "hello" },
+                                    }}>
 
-                                <div className="body1 text-secondary">{item.description}</div>
-                            </div>
-
+                                        <div className="body1 text-secondary">{item.description}</div>
+                                    </Link>
+                                </div>
                             <div className={className}>{item.value}</div>
                         </div>);
                     })
