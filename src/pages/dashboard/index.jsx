@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import MainContainer from "../../components/containers/mainContainer";
 import MainBodyContainer from "../../components/containers/main-body-container";
@@ -24,12 +24,17 @@ const Panel = ({title, data}) => {
                         const className = `body1 text-secondary ${item.status == LOCK_STATUS.ready ? 'text-green' : ''}`;
 
                         return (<div key={index} name="list-item">
-                            <div name="description" className="gap-8">
-                                <Icon name="lock_rounded" size={32} />
+                           
+                                <div name="description" className="gap-8">
+                                    <Icon name="lock_rounded" size={32} />
+                                    <Link to={{
+                                     pathname: `/lock/${item.id}`,
+                                     state: { lock: "hello" },
+                                    }}>
 
-                                <div className="body1 text-secondary">{item.description}</div>
-                            </div>
-
+                                        <div className="body1 text-secondary">{item.description}</div>
+                                    </Link>
+                                </div>
                             <div className={className}>{item.value}</div>
                         </div>);
                     })

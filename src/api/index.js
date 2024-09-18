@@ -180,6 +180,44 @@ export default {
     },
 
     /**
+     * GET: Get lock by id.
+     * 
+     * @param {string} id lock id
+     * @returns {Promise<object>}
+     */
+    getLockById(id) {
+        // return request.get(`${walletId}/locks/${id}`);
+        return new Promise((resolve, reject) => {
+            try {
+                if (!id) return reject('Id is empty');
+
+                // read locks from local storage
+                let locks = localStorage.locks
+                locks = locks ? JSON.parse(locks) : [];
+
+                // find lock by id
+                const lock = locks.find(item => item.id == id);
+                console.log(`getLockById(${id}):: lock: `, lock);
+                
+                if (!lock) return reject(`Lock with id:${id} not found`);
+
+                lock.description = lockTypes.find(lockType => lockType.id == lock.type)?.name;
+
+                let duration = moment.unix(lock.endDate).diff(moment(), 'd');
+
+                lock.value = lock.status == LOCK_STATUS.waiting ?
+                `${formatCurrencySymbol(lock.amount)} / ${duration} days` :`${formatCurrencySymbol(lock.amount)} / Ready` ;
+
+                resolve({
+                    data: lock,
+                });
+            } catch (error) {
+                reject(error);
+            }
+        });
+    },
+
+    /**
      * GET: Get transactions.
      * 
      * @returns {Promise}
