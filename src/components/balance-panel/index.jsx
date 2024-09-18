@@ -57,7 +57,7 @@ const BalancePanel = ({isDashboard}) => {
 
                             <Icon name="minus_rounded" text="Defund" href="./defund" />
 
-                            <Icon name="lock_rounded" text="Lock" href="./lock-request" />
+                            <Icon name="lock_rounded" text="Lock" href="./lock" />
 
                             <Icon name="transfer_rounded" text="Transfer" href="./transfer" />
                         </IconsContainer>

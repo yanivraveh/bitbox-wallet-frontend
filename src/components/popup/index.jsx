@@ -67,6 +67,19 @@ class Popup extends React.Component {
   }
 
   /**
+  * show save dialog
+  *
+  * @param {string} title popup title message
+  * @return {Promise<boolean>}
+  */
+  save(props) {
+    return this.confirmation({
+      title: 'Do you want to save?',
+      iconName: 'success_rounded',
+    });
+  }
+
+  /**
   * show confirmation dialog
   *
   * @param {string} title popup title message
