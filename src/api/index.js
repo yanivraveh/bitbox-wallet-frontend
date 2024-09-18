@@ -26,7 +26,7 @@ const generateRandomId = () => {
  */
 const getWalletId = async () => {
     try {
-        const response = await axios.get('http://ec2-13-60-57-142.eu-north-1.compute.amazonaws.com:8081/demo/buyer');
+        const response = await axios.get(`${import.meta.env.VITE_API_DEMO_URL}buyer`);
         return response.data.replace(/"/g, '');
     } catch (error) {
         console.error('Failed to get wallet id', error);
