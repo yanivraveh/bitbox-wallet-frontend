@@ -15,12 +15,12 @@ const LockDetailsPage = () => {
     amount: "",
     endDate: "",
     timeLeft: "",
-    status: "Waiting",
+    status: "1",
   });
 
   const LOCK_STATUS = {
     1: "Waiting",
-    2: "Ready",
+    2: "Released",
   };
 
   useEffect(() => {
@@ -56,7 +56,14 @@ const LockDetailsPage = () => {
         <Input disabled={true} label="Time left" value={model.timeLeft} />
         <section className="transaction-status frame2">
           <p className="body2 text-secondary frame2-content">
-            Status: <span className="body1 text-purple">{model.status}</span>
+            Status:{" "}
+            <span
+              className={
+                "body1" + model.status == 2 ? "text-green" : "text-purple"
+              }
+            >
+              {model.status}
+            </span>
           </p>
         </section>
       </section>
