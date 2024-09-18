@@ -20,9 +20,24 @@ const generateRandomId = () => {
 }
 
 /**
+ * Get the wallet id
+ * 
+ * @returns {string}
+ */
+const getWalletId = async () => {
+    try {
+        const response = await axios.get('http://ec2-13-60-57-142.eu-north-1.compute.amazonaws.com:8081/demo/buyer');
+        return response.data.replace(/"/g, '');
+    } catch (error) {
+        console.error('Failed to get wallet id', error);
+    }
+}
+
+
+/**
  * Wallet ID
  */
-let walletId = localStorage.walletId || '';
+let walletId = await getWalletId();
 
 /**
  * Http request instance
@@ -139,49 +154,31 @@ export default {
         return new Promise(async (resolve, reject) => {
             try {
                 const response = await request.get(`${walletId}/locks`);
-                const { data } = response;                
+                const { data } = response;
 
-                data.map(item => {
-                    // item.description = lockTypes.find(lockType => lockType.id == item.type)?.name || '';
-                    item.description = item.recipientId;
+                if (!Array.isArray(data)) {
+                    console.error('Received data is not an array:', data);
+                    resolve({ data: [] });
+                    return;
+                }
 
-                    let duration = moment.unix(item.endDate / 1000).diff(moment(), 'd');
+                const processedData = data.map(item => {
+                    const processedItem = { ...item };
+                    processedItem.description = processedItem.recipientId;
+
+                    let duration = moment.unix(processedItem.endDate / 1000).diff(moment(), 'd');
                     duration = duration < 0 ? 0 : duration;
 
-                    // item.value = item.status == LOCK_STATUS.waiting ?
-                    // `${formatCurrencySymbol(item.amount)} / ${duration} days` :`${formatCurrencySymbol(item.amount)} / Released` ;
-                    item.value = `${formatCurrencySymbol(item.amount)} / ${duration} days`;
+                    processedItem.value = `${formatCurrencySymbol(processedItem.amount)} / ${duration} days`;
+                    return processedItem;
                 });
 
-                resolve({data})
+                resolve({ data: processedData });
             } catch (error) {
+                console.error('Error fetching locks:', error);
                 reject(error);
             }
         });
-
-        // return request.get(`${walletId}/locks`);
-
-        // // read locks from local storage
-        // let data = localStorage.locks
-        // data = data ? JSON.parse(data) : [];
-
-        // data.map(item => {
-        //     item.description = lockTypes.find(lockType => lockType.id == item.type)?.name;
-
-        //     let duration = moment.unix(item.endDate).diff(moment(), 'd');
-        //     duration = duration < 0 ? 0 : duration;
-
-        //     item.value = item.status == LOCK_STATUS.waiting ?
-        //     `${formatCurrencySymbol(item.amount)} / ${duration} days` :`${formatCurrencySymbol(item.amount)} / Ready` ;
-        // });
-
-        // return new Promise((resolve, reject) => {
-        //     setTimeout(() => {
-        //         resolve({
-        //             data,
-        //         });
-        //     }, TIMEOUT);
-        // });
     },
 
     /**
