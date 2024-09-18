@@ -95,7 +95,7 @@ const DashboardPage = () => {
                     const record = res.data;       
                     if (record && !popupRef?.current?.isVisible()) {                        
                         // Navigate to '/lock' and pass data via state
-                        const  title = `A request came from "${record.senderId}" for the amount of ${formatCurrency(record.amount)}`;
+                        const  title = `A request came from "TicketSwap" for the amount of ${formatCurrency(record.amount)}`;
                         const res = await popupRef?.current?.confirmation({
                             iconName: 'lock_rounded',
                             okBtnText: 'Detailed',
