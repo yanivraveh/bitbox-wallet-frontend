@@ -48,33 +48,39 @@ export default {
      * @param {object} data lock data
      * @returns {Promise}
      */
-    createLock(data) {        
-        return new Promise((resolve, reject) => {
-            try {
-                if (!data) return reject('Data is empty');
+    createLock(data) {    
+        // set auto properties
+        data.id = generateRandomId();
+        data.endDate = moment(data.endDate).unix() * 1000;
 
-                // read locks from local storage
-                let locks = localStorage.locks
-                locks = locks ? JSON.parse(locks) : [];
+        return request.post(`${walletId}/lock`, data);
+           
+        // return new Promise((resolve, reject) => {
+        //     try {
+        //         if (!data) return reject('Data is empty');
 
-                // save lock to storage
-                data.id = generateRandomId();
-                locks.push(data);
-                localStorage.locks = JSON.stringify(locks);
+        //         // read locks from local storage
+        //         let locks = localStorage.locks
+        //         locks = locks ? JSON.parse(locks) : [];
 
-                // read lock requests from local storage
-                let lockRequests = localStorage.lockRequests
-                lockRequests = lockRequests ? JSON.parse(lockRequests) : [];
+        //         // save lock to storage
+        //         data.id = generateRandomId();
+        //         locks.push(data);
+        //         localStorage.locks = JSON.stringify(locks);
 
-                // remove lock request after creating lock
-                lockRequests = lockRequests.filter(item => item.id != data.lockRequestId);
-                localStorage.lockRequests = JSON.stringify(lockRequests);
+        //         // read lock requests from local storage
+        //         let lockRequests = localStorage.lockRequests
+        //         lockRequests = lockRequests ? JSON.parse(lockRequests) : [];
 
-                resolve(data);
-            } catch (error) {
-                reject(error);
-            }
-        });
+        //         // remove lock request after creating lock
+        //         lockRequests = lockRequests.filter(item => item.id != data.lockRequestId);
+        //         localStorage.lockRequests = JSON.stringify(lockRequests);
+
+        //         resolve(data);
+        //     } catch (error) {
+        //         reject(error);
+        //     }
+        // });
     },
 
     /**
@@ -129,30 +135,53 @@ export default {
      * 
      * @returns {Promise}
      */
-    getLocks() {
+    async getLocks() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const response = await request.get(`${walletId}/locks`);
+                const { data } = response;                
+
+                data.map(item => {
+                    // item.description = lockTypes.find(lockType => lockType.id == item.type)?.name || '';
+                    item.description = item.recipientId;
+
+                    let duration = moment.unix(item.endDate / 1000).diff(moment(), 'd');
+                    duration = duration < 0 ? 0 : duration;
+
+                    // item.value = item.status == LOCK_STATUS.waiting ?
+                    // `${formatCurrencySymbol(item.amount)} / ${duration} days` :`${formatCurrencySymbol(item.amount)} / Released` ;
+                    item.value = `${formatCurrencySymbol(item.amount)} / ${duration} days`;
+                });
+
+                resolve({data})
+            } catch (error) {
+                reject(error);
+            }
+        });
+
         // return request.get(`${walletId}/locks`);
 
-        // read locks from local storage
-        let data = localStorage.locks
-        data = data ? JSON.parse(data) : [];
+        // // read locks from local storage
+        // let data = localStorage.locks
+        // data = data ? JSON.parse(data) : [];
 
-        data.map(item => {
-            item.description = lockTypes.find(lockType => lockType.id == item.type)?.name;
+        // data.map(item => {
+        //     item.description = lockTypes.find(lockType => lockType.id == item.type)?.name;
 
-            let duration = moment.unix(item.endDate).diff(moment(), 'd');
-            duration = duration < 0 ? 0 : duration;
+        //     let duration = moment.unix(item.endDate).diff(moment(), 'd');
+        //     duration = duration < 0 ? 0 : duration;
 
-            item.value = item.status == LOCK_STATUS.waiting ?
-            `${formatCurrencySymbol(item.amount)} / ${duration} days` :`${formatCurrencySymbol(item.amount)} / Ready` ;
-        });
+        //     item.value = item.status == LOCK_STATUS.waiting ?
+        //     `${formatCurrencySymbol(item.amount)} / ${duration} days` :`${formatCurrencySymbol(item.amount)} / Ready` ;
+        // });
 
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve({
-                    data,
-                });
-            }, TIMEOUT);
-        });
+        // return new Promise((resolve, reject) => {
+        //     setTimeout(() => {
+        //         resolve({
+        //             data,
+        //         });
+        //     }, TIMEOUT);
+        // });
     },
 
     /**
@@ -169,8 +198,9 @@ export default {
                 
                 const record = records.at(-1) || null;
                 if (record) {
-                    let duration = `${moment.unix(record.endDate).diff(moment(), 'd')} days`;
-                    record.duration = duration < 0 ? 0 : duration;
+                    let duration = moment.unix(record.endDate).diff(moment(), 'd');
+                    duration = duration < 0 ? 0 : duration;
+                    record.duration = `${duration} days`;
                 }
                 resolve({
                     data: record,
