@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ScreenTitle from "../../components/texts/screenTitle.jsx";
 import Subtitle from "../../components/texts/subtitle.jsx";
-import DynamicButton from "../../components/buttons/DynamicButton.jsx";
+import DynamicButton from "../../components/buttons/dynamicButton.jsx";
 import MainContainer from "../../components/containers/mainContainer.jsx";
 import DynamicInput from "../../components/inputs/dynamicInput.jsx";
 

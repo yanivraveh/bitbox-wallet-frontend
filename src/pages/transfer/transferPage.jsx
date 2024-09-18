@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import MainContainer from "../../components/containers/mainContainer";
 import ScreenTitle from "../../components/texts/screenTitle";
 import DynamicInput from "../../components/inputs/dynamicInput";
-import DynamicButton from "../../components/buttons/DynamicButton";
+import DynamicButton from "../../components/buttons/dynamicButton";
 
 const TransferPage = () => {
   const [amount, setAmount] = useState("");

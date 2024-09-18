@@ -4,7 +4,7 @@ import "./style.css";
 import FunctionalContainer from "../../components/containers/functionalContainer";
 import ScreenTitle from "../../components/texts/screenTitle";
 import Subtitle from "../../components/texts/subtitle";
-import DynamicButton from "../../components/buttons/DynamicButton";
+import DynamicButton from "../../components/buttons/dynamicButton";
 
 const totalBalance = 1000.0;
 const totalLocked = 100.0;
