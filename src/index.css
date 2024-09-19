@@ -84,6 +84,9 @@ flex-grow: 0;
 .gap-16 {
   gap: 16px;
 }
+.margin-bottom-24 {
+  margin-bottom: 24px;
+}
 .padding-16 {
   padding: 16px;
 }
@@ -188,6 +191,15 @@ flex-grow: 0;
 .button[appereance=outlined] {
   background-color: transparent;
   border: 1px solid var(--main-color);
+}
+
+.button[appereance=darkOutlined] {
+  background-color: transparent;
+  border: 1px solid var(--secondary-color);
+}
+
+.button[appereance=darkOutlined] .btn{
+  color: var(--secondary-color);
 }
 
 .data-panel{

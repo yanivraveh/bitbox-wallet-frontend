@@ -1,58 +1,41 @@
-import React, { useState } from "react";
-import ScreenTitle from "../../components/texts/screenTitle.jsx";
-import Subtitle from "../../components/texts/subtitle.jsx";
-import DynamicButton from "../../components/buttons/dynamicButton.jsx";
-import MainContainer from "../../components/containers/mainContainer.jsx";
-import DynamicInput from "../../components/inputs/dynamicInput.jsx";
+import React from "react";
+import MainBodyContainer from "../../components/containers/main-body-container.jsx";
+import { Button } from "../../components/index.js";
+import styled from "styled-components";
+
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+`;
+
+const CenteredContainer = styled.div`
+  margin-top: 100px;
+  max-height: 100%;
+`;
 
 const WelcomePage = () => {
-  const [walletId, setWalletId] = useState("");
-  const [walletIdError, setWalletIdError] = useState("");
-
-  const validateWalletId = () => {
-    const parsedWalletId = walletId.replace(/\D/g, ""); // Remove non-numeric characters
-
-    if (parsedWalletId.trim() === "") {
-      setWalletIdError("Wallet ID cannot be empty");
-    } else if (parsedWalletId.length < 6 || parsedWalletId.length > 12) {
-      setWalletIdError("Wallet ID must be between 6 and 12 digits");
-    } else {
-      setWalletIdError(""); // Clear error if valid
-    }
-  };
-
-  const handleWalletIdChange = (e) => {
-    setWalletId(e.target.value);
-    setWalletIdError(""); // Clear error on change
-  };
-
   return (
     <>
-      <MainContainer>
-        <ScreenTitle text="Welcome" />
-        <Subtitle text="Digital Shekel Wallet" />
-        <DynamicInput
-          type="text"
-          placeholder="Enter your wallet ID"
-          value={walletId}
-          onChange={handleWalletIdChange}
-          onBlur={validateWalletId}
-          error={!!walletIdError}
-          errorMessage={walletIdError}
-        />
+      <CenteredContainer>
+        <MainBodyContainer>
+          <div className="padding-top-16">
+            <section className="gap-4 flex-column padding-top-16">
+              <ButtonContainer>
+                <h1 className="text-secondary">Let's Start</h1>
 
-        <DynamicButton
-          text={"Open Existing Wallet"}
-          bg={"#50924E"}
-          hoverbg={"#396d37"}
-          to={"/main"}
-        />
-        <DynamicButton
-          text={"Create New Wallet"}
-          hoverbg={"#2358DC"}
-          bg={"#4F7AE3"}
-        />
-      </MainContainer>
+                <Button text="Open existing" />
+                <Button appereance={"darkOutlined"} text="Enter wallet ID" />
+                <Button
+                  to={"/dashboard"}
+                  appereance={"darkOutlined"}
+                  text="Create new wallet"
+                />
+              </ButtonContainer>
+            </section>
+          </div>
+        </MainBodyContainer>
+      </CenteredContainer>
     </>
   );
 };

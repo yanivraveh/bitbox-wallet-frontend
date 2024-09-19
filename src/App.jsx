@@ -28,13 +28,14 @@ function App() {
         <div id="navigator-container">
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<DashboardPage />} />
+              <Route path="/" element={<WelcomePage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/main" element={<MainPage />} />
               <Route path="/fund" element={<FundPage />} />
               <Route path="/defund" element={<DefundPage />} />
               <Route path="/transfer" element={<TransferPage />} />
-              <Route path="/lock" element={<LockPage  />} />
-              <Route path="/lock-request" element={<LockRequestPage  />} />
+              <Route path="/lock" element={<LockPage />} />
+              <Route path="/lock-request" element={<LockRequestPage />} />
               <Route path="/lock/:id" element={<LockDetailsPage id />} />
               <Route path="/addressbook" element={"address book"} />
               <Route path="/wallet" element={"wallet"} />
