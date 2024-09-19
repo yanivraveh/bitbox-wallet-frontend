@@ -90,34 +90,7 @@ const DashboardPage = () => {
     //     })();
     // }, []);
 
-    // show lock request notifications
-    useEffect(() => {
-        // Set the interval to perform the task every 5 seconds
-        const interval = setInterval(() => {
-            (async function fetchData() {
-                try {
-                    const res = await api.getLatestLockRequest(); 
-                    const record = res.data;       
-                    if (record && !popupRef?.current?.isVisible()) {                        
-                        // Navigate to '/lock' and pass data via state
-                        const  title = `A request came from "TicketSwap" for the amount of ${formatCurrency(record.amount)}`;
-                        const res = await popupRef?.current?.confirmation({
-                            iconName: 'lock_rounded',
-                            okBtnText: 'Detailed',
-                            title
-                        });                        
-                        res && navigate('/lock', { state: { lockRequest: record } });
-                    }
-                } catch (error) {
-                    console.error(error);    
-                }
-            })();
-        }, 5000);
-
-        // Clean up the interval on component unmount
-        return () => clearInterval(interval);
-    }, []); // Empty dependency array ensures the interval is set up only once
-
+    
     return (
         <MainContainer>
             <div id="dashboard">
