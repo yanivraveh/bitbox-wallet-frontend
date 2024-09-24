@@ -1,13 +1,13 @@
 
-import { useState, useRef } from 'react';
-
+import { useState, useRef, useEffect } from 'react';
+import './lock.css';
 import { useLocation, useNavigate } from 'react-router-dom';
-
 import { BalancePanel, Button, Icon, Input, Select, Popup } from "../../components";
 import MainBodyContainer from "../../components/containers/main-body-container";
 import { ages, genders, pspIds, LOCK_TYPE, lockTypes } from '../../helpers';
 import api from '../../api';
 import moment from 'moment';
+import { getWalletId } from '../../api'; // Import getWalletId
 
 const LockPage = () => {
     const navigate = useNavigate();
@@ -16,7 +16,7 @@ const LockPage = () => {
     const { state } = location || {}; // Optional chaining in case there's no state
     const { lockRequest } = state || {}; // Extracting data from state
 
-    const [model, setMoel] = useState({
+    const [model, setModel] = useState({
         ...lockRequest,
         lockRequestId: lockRequest?.id || '',
         type: LOCK_TYPE.ticket,
@@ -30,6 +30,16 @@ const LockPage = () => {
         status: 'OPEN',
         lockType:'THREE_PARTY',
     });
+
+    useEffect(() => {
+        const fetchWalletId = async () => {
+            const walletId = await getWalletId();
+            setModel(prevModel => ({ ...prevModel, walletId }));
+            // console.log('walletId', walletId);
+        };
+
+        fetchWalletId();
+    }, []);
 
     const iconName = model.type == LOCK_TYPE.money ? 'currency_exchange_rounded' : 'plane_rounded';
     const lockName = lockTypes.find(item => item.id == model.type)?.name || '';
@@ -53,7 +63,7 @@ const LockPage = () => {
             value = Number(value)
         }        
          
-        setMoel({
+        setModel({
             ...model,
             [key]: value,
         });
@@ -69,11 +79,16 @@ const LockPage = () => {
         if (!res) {
             return;
         }
-
+    
         const data = {...model};
         api.createLock(data).then(res => {
-            alert('Save succeeded');
-            navigate('/');
+            popupRef.current.success({
+                title: 'Save succeeded',
+                okBtnText: 'OK',
+                type: 'alert'  // Explicitly set the type to 'alert'
+            }).then(() => {
+                navigate('/');
+            });
         })
         .catch(err => console.error(err));
     }
@@ -160,6 +175,7 @@ const LockPage = () => {
 
             <Popup
                 ref={popupRef}
+                iconName="success_rounded"
             />
         </MainBodyContainer>
     );

@@ -1,0 +1,9 @@
+select {
+  background-color: var(--bg-dark-color);
+  color: var(--secondary-color);
+}
+
+select option {
+  background-color: var(--bg-dark-color);
+  color: var(--secondary-color);
+}

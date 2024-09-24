@@ -10,7 +10,7 @@ const LockRequestPage = () => {
     const navigate = useNavigate();
 
     // define object that holds form data
-    const [model, setMoel] = useState({
+    const [model, setModel] = useState({
         senderId: '',
         recepientId: '',
         recipientPspId: '',
@@ -33,7 +33,7 @@ const LockRequestPage = () => {
             value = Number(value)
         }        
          
-        setMoel({
+        setModel({
             ...model,
             [key]: value,
         });

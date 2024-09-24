@@ -140,39 +140,45 @@ class Popup extends React.Component {
   */
   success(props) {
     return this.showDialog({
-      ...props,
-      type: 'alert',
-      iconName: 'success_rounded',
-      title: 'The operation was a success!',
+        ...props,
+        type: 'alert',
+        iconName: 'success_rounded',
+        title: props.title || 'The operation was a success!',
+        okBtnText: props.okBtnText || 'OK',
+        showOkButton: true
+
     });
-  }
-
-  render() {
-    const { visible, type, title, iconName='logo', okBtnText='OK', cancelBtnText='Cancel' } = this.state;
-    
-    if (!visible) return null;
-
-    return (
-      <Overlay>
-        <PopupContent>
-          <CloseButton onClick={e => hideDialog(false)}>×</CloseButton>
+}
+render() {
+  const { visible, type, title, iconName='logo', okBtnText='OK', cancelBtnText='Cancel' } = this.state;
   
-          <Icon name={iconName} />
-  
-          <Message>{title}</Message>
-          
-          {
-            type == 'confirmation' &&
-            <ButtonsContainer>
-              <Button key="ok" text={okBtnText} onClick={e => hideDialog(true)} />
+  if (!visible) return null;
 
-              <Button key="cancel" text={cancelBtnText} appereance="outlined" onClick={e => hideDialog(false)} />
-            </ButtonsContainer>
-          }
-        </PopupContent>
-      </Overlay>
-    );
-  }
+  return (
+    <Overlay>
+      <PopupContent>
+        {type !== 'alert' && (
+          <CloseButton onClick={() => hideDialog(false)}>×</CloseButton>
+        )}
+
+        <Icon name={iconName} />
+
+        <Message>{title}</Message>
+        
+        <ButtonsContainer>
+          {type === 'confirmation' ? (
+            <>
+              <Button key="ok" text={okBtnText} onClick={() => hideDialog(true)} />
+              <Button key="cancel" text={cancelBtnText} appereance="outlined" onClick={() => hideDialog(false)} />
+            </>
+          ) : (
+            <Button key="ok" text={okBtnText} onClick={() => hideDialog(true)} />
+          )}
+        </ButtonsContainer>
+      </PopupContent>
+    </Overlay>
+  );
+}
 }
 
 // const Popup = ({ isOpen, onClose, iconName, text, buttons = [] }) => {

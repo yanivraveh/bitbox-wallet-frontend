@@ -56,6 +56,8 @@ export const setWalletId = (value) => {
     localStorage.setItem('walletId', value);
 }
 
+export { getWalletId }; // Ensure getWalletId is exported
+
 export default {        
     
     /**
