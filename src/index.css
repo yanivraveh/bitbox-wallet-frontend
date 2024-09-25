@@ -34,8 +34,9 @@ h1 {
   font-size: 14px;
 }
 .description1 {
-  line-height: 12px;
-  font-size: 10px;
+  line-height: 16px;
+  font-size: 16px;
+  margin-bottom: 0.5rem;
 }
 .btn {
   font-size: 18px;
@@ -97,7 +98,7 @@ flex-grow: 0;
   color: var(--secondary-color);
 }
 .text-gray {
-  color: var(--gray-color);
+  color: #bdbdbd;
 }
 .text-green {
   color: var(--green-color);
@@ -233,9 +234,9 @@ flex-grow: 0;
   input, select {
     background-color: transparent;
     border: none;
-    height: 17px;
-    line-height: 16.8px;
-    font-size: 14px;
+    height: 18px;
+    line-height: 18px;
+    font-size: 17px;
     outline: none;
     font-weight: 400;
     font-family: inherit;
