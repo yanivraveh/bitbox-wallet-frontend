@@ -64,32 +64,25 @@ const Panel = ({title, data}) => {
 const DashboardPage = () => {
     const navigate = useNavigate();
 
-    /**
-     * Popup component inner object reference
-     */
     const popupRef = useRef(null);
     
-    // fetch locks from api
     const [locks, setLocks] = useState([]);
+    const [balance, setBalance] = useState({ total: 0, locked: 0 });
+
     useEffect(() => {
         (async function fetchData() {
-            const res = await api.getLocks();                        
-            setLocks(res.data);
+            const balanceRes = await api.getBalance();
+            setBalance(balanceRes.data);
 
-            const hasReady = res.data.find(item => item.status == LOCK_STATUS.ready);            
+            const locksRes = await api.getLocks();
+            setLocks(locksRes.data);
+
+            const hasReady = locksRes.data.find(item => item.status == LOCK_STATUS.ready);            
             hasReady && popupRef.current.success();
         })();
     }, []);
 
-    // fetch transactions from api
     const [transactions, setTransactions] = useState([]);
-    // useEffect(() => {
-    //     (async function fetchData() {
-    //         const res = await api.getTransactions();                        
-    //         setTransactions(res.data);
-    //     })();
-    // }, []);
-
     
     return (
         <MainContainer>
@@ -97,10 +90,12 @@ const DashboardPage = () => {
                 <BalancePanel isDashboard />
 
                 <MainBodyContainer className="gap-16">
-                    <Panel
-                        title="Active Locks"
-                        data={locks}
-                    />
+                    {balance.locked > 0 && (
+                        <Panel
+                            title="Active Locks"
+                            data={locks}
+                        />
+                    )}
 
                     <Panel
                         title="Recent Transactions"
