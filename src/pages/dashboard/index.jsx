@@ -99,7 +99,10 @@ const DashboardPage = () => {
 
                     <Panel
                         title="Recent Transactions"
-                        data={transactions}
+                        data={(balance.locked === 0 ? locks : transactions).map(item => ({
+                            ...item,
+                            value: item.value.split('/')[0]
+                        }))}
                     />
                 </MainBodyContainer>
             </div>
