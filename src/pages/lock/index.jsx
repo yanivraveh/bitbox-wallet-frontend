@@ -24,7 +24,7 @@ const LockPage = () => {
         amount: '',
         endDate: moment().add(1, 'M').format('YYYY-MM-DD'),
         name: 'Yaniv Raveh',
-        gender: 'M',
+        gender: '', // Changed from 'M' to ''
         recipientId: '',
         recipientPspId: pspIds[0].id,
         status: 'OPEN',
